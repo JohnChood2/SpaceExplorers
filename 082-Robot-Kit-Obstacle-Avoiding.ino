@@ -1,5 +1,6 @@
 #include <Servo.h>          //Servo motor library. This is standard library
 #include <NewPing.h>        //Ultrasonic sensor function library. You must install this library
+#include <math.h>
 
 //our L298N control pins
 const int LeftMotorForward = 5;
@@ -14,6 +15,16 @@ const int RightMotorBackward = 2;
 #define maximum_distance 200
 boolean goesForward = false;
 int distance = 100;
+const int max_speed = 255; //Max possible motor speed mapped to 8 bits (0-255 in integer). 255 is full power (5V), 0 is no power (0V)
+float calibration = 0.5; // calibration constant between (1-0) for the ratio of torque between left and right wheel.  0.5 is an even split
+float high_speed = 0.50; // High speed setting. Currently makes motor speed 2.5V (ie 0.5*255)
+float low_speed = 0.0; 
+
+int left_wheel_high = static_cast<unsigned int>(max_speed * high_speed * calibration);
+int right_wheel_high = static_cast<unsigned int>(max_speed * high_speed * (1-calibration));
+
+int left_wheel_low = static_cast<unsigned int>(max_speed * low_speed * calibration);
+int right_wheel_low = static_cast<unsigned int>(max_speed * low_speed * (1-calibration));
 
 NewPing sonar(trig_pin, echo_pin, maximum_distance); //sensor function
 Servo servo_motor; //our servo name
@@ -103,6 +114,12 @@ int readPing(){
 
 void moveStop(){
   
+  // analogWrite(LeftMotorForward,left_wheel_low);
+  // analogWrite(RightMotorForward,right_wheel_low); 
+
+  // analogWrite(LeftMotorBackward,left_wheel_low);
+  // analogWrite(RightMotorBackward,right_wheel_low);
+  
   digitalWrite(RightMotorForward, LOW);
   digitalWrite(LeftMotorForward, LOW);
   digitalWrite(RightMotorBackward, LOW);
@@ -115,11 +132,17 @@ void moveForward(){
 
     goesForward=true;
     
-    digitalWrite(LeftMotorForward, HIGH);
-    digitalWrite(RightMotorForward, HIGH);
+    analogWrite(LeftMotorForward,left_wheel_high);
+    analogWrite(RightMotorForward,right_wheel_high);
+
+    analogWrite(LeftMotorBackward,left_wheel_low);
+    analogWrite(RightMotorBackward,right_wheel_low);
+    
+    //digitalWrite(LeftMotorForward, HIGH);
+    //digitalWrite(RightMotorForward, HIGH);
   
-    digitalWrite(LeftMotorBackward, LOW);
-    digitalWrite(RightMotorBackward, LOW); 
+    //digitalWrite(LeftMotorBackward, LOW);
+    //digitalWrite(RightMotorBackward, LOW); 
   }
 }
 
@@ -127,6 +150,12 @@ void moveBackward(){
 
   goesForward=false;
 
+  //analogWrite(LeftMotorBackward,left_wheel_high);
+  //analogWrite(RightMotorBackward,right_wheel_high);
+
+  //analogWrite(LeftMotorForward,left_wheel_low);
+  //analogWrite(RightMotorForward,right_wheel_low);
+  
   digitalWrite(LeftMotorBackward, HIGH);
   digitalWrite(RightMotorBackward, HIGH);
   
@@ -137,19 +166,19 @@ void moveBackward(){
 
 void turnRight(){
 
-  digitalWrite(LeftMotorForward, HIGH);
-  digitalWrite(RightMotorBackward, HIGH);
+  digitalWrite(LeftMotorForward, left_wheel_high);
+  digitalWrite(RightMotorBackward, right_wheel_high);
   
-  digitalWrite(LeftMotorBackward, LOW);
-  digitalWrite(RightMotorForward, LOW);
+  digitalWrite(LeftMotorBackward, left_wheel_low);
+  digitalWrite(RightMotorForward, right_wheel_low);
   
   delay(500);
   
-  digitalWrite(LeftMotorForward, HIGH);
-  digitalWrite(RightMotorForward, HIGH);
+  digitalWrite(LeftMotorForward, left_wheel_high);
+  digitalWrite(RightMotorForward, right_wheel_high);
   
-  digitalWrite(LeftMotorBackward, LOW);
-  digitalWrite(RightMotorBackward, LOW);
+  digitalWrite(LeftMotorBackward, left_wheel_low);
+  digitalWrite(RightMotorBackward, right_wheel_low);
  
   
   
@@ -157,17 +186,17 @@ void turnRight(){
 
 void turnLeft(){
 
-  digitalWrite(LeftMotorBackward, HIGH);
-  digitalWrite(RightMotorForward, HIGH);
+  digitalWrite(LeftMotorBackward, left_wheel_high);
+  digitalWrite(RightMotorForward, right_wheel_high);
   
-  digitalWrite(LeftMotorForward, LOW);
-  digitalWrite(RightMotorBackward, LOW);
+  digitalWrite(LeftMotorForward, left_wheel_low);
+  digitalWrite(RightMotorBackward, right_wheel_low);
 
   delay(500);
   
-  digitalWrite(LeftMotorForward, HIGH);
-  digitalWrite(RightMotorForward, HIGH);
+  digitalWrite(LeftMotorForward, left_wheel_high);
+  digitalWrite(RightMotorForward, right_wheel_high);
   
-  digitalWrite(LeftMotorBackward, LOW);
-  digitalWrite(RightMotorBackward, LOW);
+  digitalWrite(LeftMotorBackward, left_wheel_low);
+  digitalWrite(RightMotorBackward, right_wheel_low);
 }
