@@ -1,0 +1,30 @@
+###################################
+# Syntax Coloring Map For NewPing
+###################################
+
+###################################
+# Datatypes (KEYWORD1)
+###################################
+
+Robot		KEYWORD1
+
+###################################
+# Methods and Functions (KEYWORD2)
+###################################
+
+initialize	KEYWORD2
+setCalibration	KEYWORD2
+setHighSpeed	KEYWORD2
+moveForward	KEYWORD2
+moveBackward	KEYWORD2
+turnLeft	KEYWORD2
+turnRight	KEYWORD2
+lookForward	KEYWORD2
+lookRight	KEYWORD2
+lookLeft	KEYWORD2
+lookAngle   KEYWORD2
+
+###################################
+# Constants (LITERAL1)
+###################################
+
