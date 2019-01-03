@@ -51,10 +51,9 @@ void turnLeft(int duration);
 // at different angles.
 void turnRight(int duration);
 
-// `lookForward()` makes the ultrasonic sensor on the robot look forward and
-// returns the distance to the nearest wall in centimeters. You will need to
+// `getDistance()` returns the distance to the nearest object in centimeters. You will need to
 // do experiments to figure out how accurate your robot's sensor is.
-int lookForward();
+int getDistance();
 
 // `lookForward()` makes the ultrasonic sensor on the robot look to its right
 // and returns the distance to the nearest wall in centimeters. You will need to
