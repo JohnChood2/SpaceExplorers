@@ -155,7 +155,7 @@ void turnLeft(int duration) {
 }
 
 int getDistance() {
-    readPing();
+    return readPing();
 }
 
 int lookAngle(int angle) {
@@ -171,9 +171,9 @@ int lookAngle(int angle) {
 }
 
 int lookRight() {
-    lookAngle(10);
+    return lookAngle(10);
 }
 
 int lookLeft() {
-    lookAngle(170);
+    return lookAngle(170);
 }
